@@ -10,6 +10,25 @@ fix:
 install:
 	composer install
 
+start-db:
+	sudo service postgresql start
+
+check-db:
+	ps aux | grep postgres
+
+migrate:
+	php artisan migrate
+
+console:
+	php artisan tinker
+
+deploy:
+	git push heroku
+
+
+
+
+
 
 
 
@@ -25,22 +44,11 @@ setup:
 watch:
 	npm run watch
 
-migrate:
-	php artisan migrate
-
-console:
-	php artisan tinker
-
 log:
 	tail -f storage/logs/laravel.log
 
 test:
 	php artisan test
-
-deploy:
-	git push heroku
-
-
 
 compose:
 	docker-compose up
