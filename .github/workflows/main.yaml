@@ -9,28 +9,39 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  laravel-tests:
+
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Setup PHP
-        # Action gives to setup the PHP environment to test application
-        # https://github.com/shivammathur/setup-php
         uses: shivammathur/setup-php@v2
         with:
-          # Specify the PHP version
-          php-version: '7.4'
+          php-version: '7.3'
 
-      - name: Install
-        # Install project
-        run: make install
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
-      - name: Run linter
-        # Run Linter
+      - name: Install Dependencies
+        run: composer install
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Generate database file
+        run: touch database/database.sqlite
+
+      - name: Migrate database
+        run: php artisan migrate
+
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+
+      - name: Run lint
         run: make lint
+
+      - name: Run tests
+        run: make test
