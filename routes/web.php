@@ -25,4 +25,4 @@ Route::get('urls/{id}', [UrlController::class, 'show'])
 
 Route::get('/', function () {
     return view('welcome');
-})->name('home');;
+})->name('home');

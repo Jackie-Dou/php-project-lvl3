@@ -6,6 +6,7 @@ use App\Models\Url;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Carbon\Carbon;
 
 class UrlController extends Controller
 {
@@ -38,6 +39,9 @@ class UrlController extends Controller
 
         $url = new Url();
         $url->fill($data);
+        $url->created_at = Carbon::now();
+        $url->updated_at = Carbon::now();
+
         $url->save();
         flash('Url was added successfully')->success();
         return redirect()

@@ -2,7 +2,7 @@ start:
 	php artisan serve --host 127.0.0.1
 
 lint:
-	composer run-script phpcs -- --standard=PSR12 app
+	composer run-script phpcs -- --standard=PSR12 tests app
 
 fix:
 	composer run-script phpcbf -- app
@@ -15,6 +15,7 @@ start-db:
 
 check-db:
 	ps aux | grep postgres
+	dd(DB::select('select 1'));
 
 migrate:
 	php artisan migrate
@@ -25,6 +26,8 @@ console:
 deploy:
 	git push heroku
 
+test:
+	php artisan test
 
 
 
@@ -46,9 +49,6 @@ watch:
 
 log:
 	tail -f storage/logs/laravel.log
-
-test:
-	php artisan test
 
 compose:
 	docker-compose up
