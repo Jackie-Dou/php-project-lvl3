@@ -29,44 +29,51 @@ deploy:
 test:
 	php artisan test
 
-
-
-
-
-
-
 setup:
 	composer install
-	cp -n .env.example .env|| true
+	cp -n .env.example .env || true
 	php artisan key:gen --ansi
-	touch database/database.sqlite
 	php artisan migrate
 	php artisan db:seed
 	npm install
 
-watch:
-	npm run watch
 
-log:
-	tail -f storage/logs/laravel.log
 
-compose:
-	docker-compose up
 
-compose-test:
-	docker-compose run web make test
 
-compose-bash:
-	docker-compose run web bash
 
-compose-setup: compose-build
-	docker-compose run web make setup
+#setup:
+#	composer install
+#	cp -n .env.example .env|| true
+#	php artisan key:gen --ansi
+#	touch database/database.sqlite
+#	php artisan migrate
+#	php artisan db:seed
+#	npm install
 
-compose-build:
-	docker-compose build
-
-compose-db:
-	docker-compose exec db psql -U postgres
-
-compose-down:
-	docker-compose down -v
+#watch:
+#	npm run watch
+#
+#log:
+#	tail -f storage/logs/laravel.log
+#
+#compose:
+#	docker-compose up
+#
+#compose-test:
+#	docker-compose run web make test
+#
+#compose-bash:
+#	docker-compose run web bash
+#
+#compose-setup: compose-build
+#	docker-compose run web make setup
+#
+#compose-build:
+#	docker-compose build
+#
+#compose-db:
+#	docker-compose exec db psql -U postgres
+#
+#compose-down:
+#	docker-compose down -v

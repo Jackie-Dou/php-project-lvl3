@@ -20,7 +20,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.3'
+          php-version: '8.0'
 
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
@@ -37,11 +37,37 @@ jobs:
       - name: Migrate database
         run: php artisan migrate
 
-      - name: Directory Permissions
-        run: chmod -R 777 storage bootstrap/cache
-
       - name: Run lint
         run: make lint
 
       - name: Run tests
+        run: make test
+
+  try-postgres:
+
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:12.6
+        env:
+          DB_CONNECTION: pgsql
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: analysator
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: PHP Security Checker
+        uses: StephaneBour/actions-php-security-checker@1.0
+
+      - name: Setup project
+        run: make setup
+
+      - name: Check lint
+        run: make lint
+
+      - name: Execute tests (Unit and Feature tests) via PHPUnit
         run: make test
