@@ -28,8 +28,8 @@ jobs:
       - name: Install Dependencies
         run: composer install
 
-      - name: Generate key
-        run: php artisan key:generate
+      - name: Generate laravel key
+        run: php artisan key:gen --ansi
 
       - name: Generate database file
         run: touch database/database.sqlite
