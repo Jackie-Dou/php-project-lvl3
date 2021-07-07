@@ -23,7 +23,7 @@ jobs:
           php-version: '8.0'
 
       - name: Copy .env
-        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+        run: cp -n .env.example .env || true
 
       - name: Install Dependencies
         run: composer install
