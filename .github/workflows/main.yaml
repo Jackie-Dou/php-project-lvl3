@@ -22,23 +22,11 @@ jobs:
         with:
           php-version: '8.0'
 
-      - name: Copy .env
-        run: cp -n .env.example .env || true
-
-      - name: Install Dependencies
-        run: composer install
-
-      - name: Generate laravel key
-        run: php artisan key:gen --ansi
-
       - name: Generate database file
         run: touch database/database.sqlite
 
-      - name: Migrate database
-        run: php artisan migrate
-
-      - name: Run lint
-        run: make lint
+      - name: Setup project
+        run: make setup
 
       - name: Run tests
         run: make test
