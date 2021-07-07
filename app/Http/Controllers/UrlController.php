@@ -38,9 +38,8 @@ class UrlController extends Controller
         }
 
         $url = new Url();
-        $url->fill($data);
-        $url->created_at = Carbon::now();
-        $url->updated_at = Carbon::now();
+        $insertData = array_merge($data, ['created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
+        $url->fill($insertData);
 
         $url->save();
         flash('Url was added successfully')->success();

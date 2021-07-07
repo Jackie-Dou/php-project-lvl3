@@ -15,7 +15,6 @@ start-db:
 
 check-db:
 	ps aux | grep postgres
-	dd(DB::select('select 1'));
 
 migrate:
 	php artisan migrate

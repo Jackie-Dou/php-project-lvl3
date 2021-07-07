@@ -2,19 +2,28 @@
 
 namespace Tests\Feature;
 
+use App\Models\Url;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Carbon\Carbon;
 
 class UrlTest extends TestCase
 {
 
-    public function testWelcomePage()
+    private $id;
+    private $data;
+    private const URL_NAME = "https://google.ru";
+
+    protected function setUp(): void
     {
-        $response = $this->get(route('home'));
-        $response->assertSee('Home Page');
-        $response->assertOk();
+        parent::setUp();
+        $this->data = [
+            'name' => self::URL_NAME,
+        ];
+        $this->id = DB::table('urls')->insertGetId($this->data);
     }
 
     public function testIndex()
@@ -24,50 +33,17 @@ class UrlTest extends TestCase
         $response->assertOk();
     }
 
-//    private $domainId;
-//
-//    const DOMAIN_NAME = 'https://google.ru';
-//    const PAGE_TITLE  = 'Page Analyzer';
-//
-//    protected function setUp(): void
-//    {
-//        parent::setUp();
-//        $data           = [
-//            'name'       => self::DOMAIN_NAME,
-//            'created_at' => Carbon::now()
-//        ];
-//        $this->domainId = DB::table('domains')->insertGetId($data);
-//    }
-//
-//    public function testRoot()
-//    {
-//        $response = $this->get(route('root'));
-//        $response->assertSee(self::PAGE_TITLE);
-//        $response->assertOk();
-//    }
-//
-//    public function testIndex()
-//    {
-//        $response = $this->get(route('domains.index'));
-//        $response->assertSee(self::DOMAIN_NAME);
-//        $response->assertOk();
-//    }
-//
-//    public function testStore()
-//    {
-//        $data     = [
-//            'name' => self::DOMAIN_NAME
-//        ];
-//        $response = $this->post(route('domains.store'), $data);
-//        $response->assertSessionHasNoErrors();
-//        $response->assertRedirect();
-//        $this->assertDatabaseHas('domains', $data);
-//    }
-//
-//    public function testShow()
-//    {
-//        $response = $this->get(route('domains.show', $this->domainId));
-//        $response->assertSee(self::DOMAIN_NAME);
-//        $response->assertOk();
-//    }
+    public function testStore()
+    {
+        $response = $this->post(route('urls.store'), $this->data);
+        $response->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('urls', $this->data);
+    }
+
+    public function testShow()
+    {
+        $this->assertDatabaseHas('urls', $this->data);
+        $response = $this->get(route('urls.show', $this->id));
+        $response->assertOk();
+    }
 }
