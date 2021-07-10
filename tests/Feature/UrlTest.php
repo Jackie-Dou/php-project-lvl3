@@ -24,6 +24,7 @@ class UrlTest extends TestCase
             'name' => self::URL_NAME,
         ];
         $this->id = DB::table('urls')->insertGetId($this->data);
+        // var_dump(getenv('DB_CONNECTION'));
     }
 
     public function testIndex()
