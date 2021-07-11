@@ -9,27 +9,27 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  laravel-tests:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.0'
-
-      - name: Generate database file
-        run: touch database/database.sqlite
-
-      - name: Setup project
-        run: make setup
-
-      - name: Run tests
-        run: make test
+#  laravel-tests:
+#
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#
+#      - name: Setup PHP
+#        uses: shivammathur/setup-php@v2
+#        with:
+#          php-version: '8.0'
+#
+#      - name: Generate database file
+#        run: touch database/database.sqlite
+#
+#      - name: Setup project
+#        run: make setup
+#
+#      - name: Run tests
+#        run: make test
 
 
   try-postgres:
