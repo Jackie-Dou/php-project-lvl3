@@ -16,7 +16,12 @@
     <table>
         @foreach ($url_checks as $check)
             <tr>
-                <td>{{ $check->id }} </td><td>|  {{ $check->created_at }}</td><td>|  {{ $check->status_code }}</td>
+                <td>{{ $check->id }} </td>
+                <td>|  {{ $check->created_at ?? "___"}}</td>
+                <td>|  {{ $check->status_code ?? "___"}}</td>
+                <td>|  {{$check->h1 ?? "___"}}</td>
+                <td>|  {{$check->keywords ?? "___"}}</td>
+                <td>|  {{$check->description ?? "___"}}</td>
             </tr>
         @endforeach
     </table>

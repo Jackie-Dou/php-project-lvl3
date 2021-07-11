@@ -9,5 +9,5 @@ class UrlCheck extends Model
 {
     use HasFactory;
 
-    public $fillable = ['url_id', 'created_at', 'updated_at', 'status_code'];
+    public $fillable = ['url_id', 'created_at', 'updated_at', 'h1', 'keywords', 'description', 'status_code'];
 }
