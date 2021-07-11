@@ -17,38 +17,46 @@ class UrlCheckTest extends TestCase
      * @return void
      */
     private $id;
+    private $body;
 
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->body = '<h1>Hello, from test!</h1>
+            <meta name="description" content="The most popular HTML, CSS, and JS library in the world.">
+            <meta name="keywords" content="HTML, CSS, JS, library">';
+
         $url = [
             'name' => 'https://test.com',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
         ];
-
         $this->id = DB::table('urls')->insertGetId($url);
+
+        $urlChecks = [
+            'url_id'   => $this->id,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'h1'          => 'Hello, from test!',
+            'keywords'    => 'HTML, CSS, JS, library',
+            'description' => 'The most popular HTML, CSS, and JS library in the world.',
+            'status_code' => 200
+        ];
+        DB::table('url_checks')->insert($urlChecks);
     }
 
     public function testStore()
     {
         Http::fake(function () {
-            $body = '<h1>Hello, from test!</h1>
-            <meta name="description" content="The most popular HTML, CSS, and JS library in the world.">
-            <meta name="keywords" content="HTML, CSS, JS, library">';
-
-            return Http::response($body, 200);
+            return Http::response($this->body, 200);
         });
 
         $response = $this->post(route('url_checks.store', [$this->id]));
         $response->assertSessionHasNoErrors();
-        // $response->assertRedirect();
         $this->assertDatabaseHas('url_checks', [
             'url_id'   => $this->id,
-            'h1'          => 'Hello, world!',
-            'keywords'    => 'key,key1,key2,key3',
-            'description' => 'website description',
+            'h1'          => 'Hello, from test!',
+            'keywords'    => 'HTML, CSS, JS, library',
+            'description' => 'The most popular HTML, CSS, and JS library in the world.',
             'status_code' => 200
         ]);
     }
