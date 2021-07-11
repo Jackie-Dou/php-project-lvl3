@@ -49,6 +49,4 @@ class UrlCheckController extends Controller
         return redirect()
             ->route('urls.show', $id);
     }
-
-
 }

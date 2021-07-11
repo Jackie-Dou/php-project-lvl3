@@ -28,18 +28,20 @@ class UrlController extends Controller
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         try {
-            $data = $this->validate($request, [
-                'name' => 'required|max:255|url',
-            ]);
+            $data = $this->validate(
+                $request,
+                ['name' => 'required|max:255|url']
+            );
         } catch (ValidationException $e) {
             flash($e->getMessage())->error();
             return redirect()
                 ->route('home');
         }
         try {
-            $data = $this->validate($request, [
-                'name' => 'unique:urls',
-            ]);
+            $data = $this->validate(
+                $request,
+                ['name' => 'unique:urls']
+            );
         } catch (ValidationException $e) {
             flash('This url already exists')->warning();
             return redirect()
@@ -51,12 +53,12 @@ class UrlController extends Controller
         $url->fill($insertData);
         $url->save();
 
-//        $str = getenv("DB_CONNECTION");
-//        if ($str !== false) {
-//            Log::info("1");
-//        } else {
-//            Log::info("2");
-//        }
+        //        $str = getenv("DB_CONNECTION");
+        //        if ($str !== false) {
+        //            Log::info("1");
+        //        } else {
+        //            Log::info("2");
+        //        }
 
         flash('Url was added successfully')->success();
         return redirect()
@@ -69,5 +71,4 @@ class UrlController extends Controller
         $url_checks = UrlCheck::where('url_id', $id)->get();
         return view('urls.show', compact('url', 'url_checks'));
     }
-
 }
