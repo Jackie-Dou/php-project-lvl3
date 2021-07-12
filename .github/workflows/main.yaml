@@ -58,5 +58,5 @@ jobs:
       - name: Setup project
         run: make setup
 
-      - name: Execute tests with PHPUnit
-        run: make test
+#      - name: Execute tests with PHPUnit
+#        run: make test
