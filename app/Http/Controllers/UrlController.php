@@ -27,6 +27,13 @@ class UrlController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
+        //        $str = getenv("DB_CONNECTION");
+        //        if ($str !== false) {
+        //            Log::info("1");
+        //        } else {
+        //            Log::info("2");
+        //        }
+
         try {
             $data = $this->validate(
                 $request,
@@ -52,13 +59,6 @@ class UrlController extends Controller
         $insertData = array_merge($data, ['created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
         $url->fill($insertData);
         $url->save();
-
-        //        $str = getenv("DB_CONNECTION");
-        //        if ($str !== false) {
-        //            Log::info("1");
-        //        } else {
-        //            Log::info("2");
-        //        }
 
         flash('Url was added successfully')->success();
         return redirect()

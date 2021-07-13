@@ -38,13 +38,14 @@ class UrlTest extends TestCase
     {
         $response = $this->post(route('urls.store'), $this->data);
         $response->assertSessionHasNoErrors();
+        $response->assertOk();
         $this->assertDatabaseHas('urls', $this->data);
     }
 
-    public function testShow()
-    {
-        $this->assertDatabaseHas('urls', $this->data);
-        $response = $this->get(route('urls.show', $this->id));
-        $response->assertOk();
-    }
+//    public function testShow()
+//    {
+//        $this->assertDatabaseHas('urls', $this->data);
+//        $response = $this->get(route('urls.show', $this->id));
+//        $response->assertOk();
+//    }
 }
