@@ -10,7 +10,7 @@
             <p>Check web page for free</p>
             <hr>
             {{ Form::open(['route' => 'urls.store'])}}
-                {{ Form::text('name', $value = null, $attributes = [
+                {{ Form::text('url[name]', $value = null, $attributes = [
                 'placeholder' => 'https://www.example.com'])
                 }}
                 {{ Form::submit('Check') }}

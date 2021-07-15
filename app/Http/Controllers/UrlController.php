@@ -51,11 +51,16 @@ class UrlController extends Controller
             var_dump($url['name']);
         }
         var_dump("____________before_first_try_catch____________");
+
+
+        $data = parse_url($request->input('url.name'));
+        $url = [];
+        $url['name'] = ($data['scheme'] ?? '') . '://' . ($data['host'] ?? '');
+
         try {
-            $data = $this->validate(
-                $request,
-                ['name' => 'max:255|url']
-            );
+            $validator = Validator::make($url, [
+                'name' => 'required|max:255|url',
+            ])->validate();
         } catch (ValidationException $e) {
             flash($e->getMessage())->error();
             var_dump("____________trouble_in_first_catch____________");
@@ -65,10 +70,9 @@ class UrlController extends Controller
         }
         var_dump("____________before_second_try_catch____________");
         try {
-            $data = $this->validate(
-                $request,
-                ['name' => 'unique:urls']
-            );
+            $validator = Validator::make($url, [
+                'name' => 'unique:urls,name',
+            ]);
         } catch (ValidationException $e) {
             flash('This url already exists')->warning();
             var_dump("____________trouble_in_second_catch____________");
@@ -80,7 +84,7 @@ class UrlController extends Controller
         var_dump("____________before_inserting_in_DB____________");
 
         $url = new Url();
-        $insertData = array_merge($data, ['created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
+        $insertData = array_merge([$url['name']], ['created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
         var_dump($insertData);
         $url->fill($insertData);
         $url->save();
