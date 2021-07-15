@@ -58,15 +58,16 @@ class UrlController extends Controller
 
         $validatorUrl = Validator::make($url, [
             'name' => 'required|max:255|url',
-        ]);
-        if ($validatorUrl->fails()) {
-            flash("Invalid input data")->error();
-            var_dump("____________trouble_in_first_catch____________");
-            return redirect()
-                ->route('home');
-        }
+        ])->validate();
+//        if ($validatorUrl->fails()) {
+//            flash("Invalid input data")->error();
+//            var_dump("____________trouble_in_first_catch____________");
+//            return redirect()
+//                ->route('home');
+//        }
+
         $validatorUnique = Validator::make($url, [
-            'name' => 'unique:urls',
+            'name' => 'unique:urls,name',
         ]);
         if ($validatorUnique->fails()) {
             flash('This url already exists')->warning();
