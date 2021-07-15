@@ -18,9 +18,7 @@ class UrlTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->data = [
-            'name' => self::URL_NAME,
-        ];
+        $this->data = ['url' => ['name' => 'http://google.com']];
     }
 
     public function testIndex()
@@ -34,14 +32,14 @@ class UrlTest extends TestCase
     {
         $response = $this->post(route('urls.store'), $this->data);
         $response->assertSessionHasNoErrors();
-       // $response->assertRedirect();
-        $this->assertDatabaseHas('urls', $this->data);
+        $response->assertRedirect();
+        $this->assertDatabaseHas('urls', $this->data['url']);
     }
 
     public function testShow()
     {
-        $id = DB::table('urls')->insertGetId($this->data);
-        $this->assertDatabaseHas('urls', $this->data);
+        $id = DB::table('urls')->insertGetId($this->data['url']);
+        $this->assertDatabaseHas('urls', $this->data['url']);
         $response = $this->get(route('urls.show', $id));
         $response->assertOk();
     }

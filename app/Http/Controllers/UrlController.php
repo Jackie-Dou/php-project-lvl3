@@ -83,11 +83,11 @@ class UrlController extends Controller
 
         var_dump("____________before_inserting_in_DB____________");
 
-        $url = new Url();
-        $insertData = array_merge([$url['name']], ['created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
-        var_dump($insertData);
-        $url->fill($insertData);
-        $url->save();
+        DB::table('urls')->insert([
+            'name' => $url['name'],
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
 
         var_dump("____________after_inserting_in_DB____________");
 
