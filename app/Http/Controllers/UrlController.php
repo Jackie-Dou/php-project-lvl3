@@ -54,7 +54,7 @@ class UrlController extends Controller
         try {
             $data = $this->validate(
                 $request,
-                ['name' => 'required|max:255']
+                ['name' => 'url']
             );
         } catch (ValidationException $e) {
             flash($e->getMessage())->error();
