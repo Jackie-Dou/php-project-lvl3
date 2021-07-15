@@ -58,6 +58,7 @@ class UrlController extends Controller
             );
         } catch (ValidationException $e) {
             flash($e->getMessage())->error();
+            var_dump("___________1catch");
             return redirect()
                 ->route('home');
         }
@@ -68,6 +69,7 @@ class UrlController extends Controller
             );
         } catch (ValidationException $e) {
             flash('This url already exists')->warning();
+            var_dump("___________2catch");
             return redirect()
                 ->route('home');
         }
@@ -76,6 +78,13 @@ class UrlController extends Controller
         $insertData = array_merge($data, ['created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
         $url->fill($insertData);
         $url->save();
+
+        $urls = Url::all();
+        var_dump("_______________________333______________________");
+        foreach ($urls as $url) {
+            var_dump($url['id']);
+            var_dump($url['name']);
+        }
 
         flash('Url was added successfully')->success();
         return redirect()
