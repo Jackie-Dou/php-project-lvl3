@@ -15,12 +15,12 @@ class UrlController extends Controller
 {
     public function index()
     {
-        $str = getenv("DB_CONNECTION");
-        if ($str !== false) {
-            Log::info($str);
-        } else {
-            Log::info("error!");
-        }
+//        $str = getenv("DB_CONNECTION");
+//        if ($str !== false) {
+//            Log::info($str);
+//        } else {
+//            Log::info("error!");
+//        }
 
         $urls = Url::all();
         $lastChecks = DB::table('url_checks')
@@ -34,12 +34,12 @@ class UrlController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $str = getenv("DB_CONNECTION");
-        if ($str !== false) {
-            Log::info($str);
-        } else {
-            Log::info("error!");
-        }
+//        $str = getenv("DB_CONNECTION");
+//        if ($str !== false) {
+//            Log::info($str);
+//        } else {
+//            Log::info("error!");
+//        }
 
         try {
             $data = $this->validate(

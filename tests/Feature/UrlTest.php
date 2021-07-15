@@ -12,8 +12,6 @@ use Carbon\Carbon;
 
 class UrlTest extends TestCase
 {
-
-    private $id;
     private $data;
     private const URL_NAME = "https://google.ru";
 
@@ -23,8 +21,6 @@ class UrlTest extends TestCase
         $this->data = [
             'name' => self::URL_NAME,
         ];
-        $this->id = DB::table('urls')->insertGetId($this->data);
-        // var_dump(getenv('DB_CONNECTION'));
     }
 
     public function testIndex()
@@ -36,17 +32,17 @@ class UrlTest extends TestCase
 
     public function testStore()
     {
-        //$response = $this->post(route('urls.store'), $this->data);
-        $response = $this->get(route('urls.store'));
+        $response = $this->post(route('urls.store'), $this->data);
         $response->assertSessionHasNoErrors();
-        $response->assertOk();
+        $response->assertRedirect();
         $this->assertDatabaseHas('urls', $this->data);
     }
 
-//    public function testShow()
-//    {
-//        $this->assertDatabaseHas('urls', $this->data);
-//        $response = $this->get(route('urls.show', $this->id));
-//        $response->assertOk();
-//    }
+    public function testShow()
+    {
+        $id = DB::table('urls')->insertGetId($this->data);
+        $this->assertDatabaseHas('urls', $this->data);
+        $response = $this->get(route('urls.show', $id));
+        $response->assertOk();
+    }
 }

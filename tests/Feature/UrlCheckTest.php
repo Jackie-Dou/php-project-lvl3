@@ -41,7 +41,7 @@ class UrlCheckTest extends TestCase
             'description' => 'The most popular HTML, CSS, and JS library in the world.',
             'status_code' => 200
         ];
-        DB::table('url_checks')->insert($urlChecks);
+        //DB::table('url_checks')->insert($urlChecks);
     }
 
     public function testStore()
@@ -51,6 +51,7 @@ class UrlCheckTest extends TestCase
         });
 
         $response = $this->post(route('url_checks.store', [$this->id]));
+
         $response->assertSessionHasNoErrors();
         $this->assertDatabaseHas('url_checks', [
             'url_id'   => $this->id,
