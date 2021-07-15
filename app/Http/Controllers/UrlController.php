@@ -54,7 +54,7 @@ class UrlController extends Controller
         try {
             $data = $this->validate(
                 $request,
-                ['name' => 'required|url']
+                ['name' => 'max:255|url']
             );
         } catch (ValidationException $e) {
             flash($e->getMessage())->error();
@@ -78,8 +78,10 @@ class UrlController extends Controller
         }
 
         var_dump("____________before_inserting_in_DB____________");
+
         $url = new Url();
         $insertData = array_merge($data, ['created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
+        var_dump($insertData);
         $url->fill($insertData);
         $url->save();
 
