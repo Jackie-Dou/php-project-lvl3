@@ -51,17 +51,17 @@ class UrlController extends Controller
             var_dump($url['name']);
         }
 
-        try {
-            $data = $this->validate(
-                $request,
-                ['name' => 'required|max:255|url']
-            );
-        } catch (ValidationException $e) {
-            flash($e->getMessage())->error();
-            var_dump("___________1catch");
-            return redirect()
-                ->route('home');
-        }
+//        try {
+//            $data = $this->validate(
+//                $request,
+//                ['name' => 'required|max:255|url']
+//            );
+//        } catch (ValidationException $e) {
+//            flash($e->getMessage())->error();
+//            var_dump("___________1catch");
+//            return redirect()
+//                ->route('home');
+//        }
         try {
             $data = $this->validate(
                 $request,
