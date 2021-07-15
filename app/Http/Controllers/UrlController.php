@@ -46,7 +46,10 @@ class UrlController extends Controller
 
         $urls = Url::all();
         var_dump("_______________________222______________________");
-        var_dump($urls);
+        foreach ($urls as $url) {
+            var_dump($url['id']);
+            var_dump($url['name']);
+        }
 
         try {
             $data = $this->validate(
