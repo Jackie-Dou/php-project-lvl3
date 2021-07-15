@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Url;
 use App\Models\UrlCheck;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
+use App\Http\Middleware\VerifyCsrfToken;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class UrlController extends Controller
 {
@@ -50,33 +49,28 @@ class UrlController extends Controller
             var_dump($url['id']);
             var_dump($url['name']);
         }
-        var_dump("____________before_first_try_catch____________");
-
 
         $data = parse_url($request->input('url.name'));
         $url = [];
         $url['name'] = ($data['scheme'] ?? '') . '://' . ($data['host'] ?? '');
 
-        try {
-            $validator = Validator::make($url, [
-                'name' => 'required|max:255|url',
-            ])->validate();
-        } catch (ValidationException $e) {
-            flash($e->getMessage())->error();
+        var_dump("____________before_validation____________");
+
+        $validatorUrl = Validator::make($url, [
+            'name' => 'required|max:255|url',
+        ]);
+        if ($validatorUrl->fails()) {
+            flash("Invalid input data")->error();
             var_dump("____________trouble_in_first_catch____________");
-            var_dump($e->getMessage());
             return redirect()
                 ->route('home');
         }
-        var_dump("____________before_second_try_catch____________");
-        try {
-            $validator = Validator::make($url, [
-                'name' => 'unique:urls',
-            ])->validate();
-        } catch (ValidationException $e) {
+        $validatorUnique = Validator::make($url, [
+            'name' => 'unique:urls',
+        ]);
+        if ($validatorUnique->fails()) {
             flash('This url already exists')->warning();
             var_dump("____________trouble_in_second_catch____________");
-            var_dump($e->getMessage());
             return redirect()
                 ->route('home');
         }
