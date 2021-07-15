@@ -15,9 +15,6 @@ use App\Http\Controllers\UrlController;
 |
 */
 
-//Route::get('urls/store', [UrlController::class, 'store'])
-//    ->name('urls.store');
-
 Route::post('urls/store', [UrlController::class, 'store'])
     ->name('urls.store');
 
