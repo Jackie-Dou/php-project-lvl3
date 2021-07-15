@@ -33,8 +33,8 @@ class UrlCheckController extends Controller
                 'url_id' => $id,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'h1'          => $seoInfo['h1'],
-                'keywords'    => $seoInfo['keywords'],
+                'h1' => $seoInfo['h1'],
+                'keywords' => $seoInfo['keywords'],
                 'description' => $seoInfo['description'],
                 'status_code' => $httpResponse->status(),
             ];
