@@ -34,7 +34,7 @@ class UrlController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-        var_dump("_______________________111______________________");
+        var_dump("_______________________test_input_data______________________");
         var_dump($request->input());
 
 //        $str = getenv("DB_CONNECTION");
@@ -45,23 +45,25 @@ class UrlController extends Controller
 //        }
 
         $urls = Url::all();
-        var_dump("_______________________222______________________");
+        var_dump("_______________________show_all_url_in_table______________________");
         foreach ($urls as $url) {
             var_dump($url['id']);
             var_dump($url['name']);
         }
-
-//        try {
-//            $data = $this->validate(
-//                $request,
-//                ['name' => 'required|max:255|url']
-//            );
-//        } catch (ValidationException $e) {
-//            flash($e->getMessage())->error();
-//            var_dump("___________1catch");
-//            return redirect()
-//                ->route('home');
-//        }
+        var_dump("____________before_first_try_catch____________");
+        try {
+            $data = $this->validate(
+                $request,
+                ['name' => 'required|max:255|url']
+            );
+        } catch (ValidationException $e) {
+            flash($e->getMessage())->error();
+            var_dump("____________trouble_in_first_catch____________");
+            var_dump($e->getMessage());
+            return redirect()
+                ->route('home');
+        }
+        var_dump("____________before_second_try_catch____________");
         try {
             $data = $this->validate(
                 $request,
@@ -69,18 +71,22 @@ class UrlController extends Controller
             );
         } catch (ValidationException $e) {
             flash('This url already exists')->warning();
-            var_dump("___________2catch");
+            var_dump("____________trouble_in_second_catch____________");
+            var_dump($e->getMessage());
             return redirect()
                 ->route('home');
         }
 
+        var_dump("____________before_inserting_in_DB____________");
         $url = new Url();
         $insertData = array_merge($data, ['created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
         $url->fill($insertData);
         $url->save();
 
+        var_dump("____________after_inserting_in_DB____________");
+
         $urls = Url::all();
-        var_dump("_______________________333______________________");
+        var_dump("_______________________show_all_url_in_table_again______________________");
         foreach ($urls as $url) {
             var_dump($url['id']);
             var_dump($url['name']);
