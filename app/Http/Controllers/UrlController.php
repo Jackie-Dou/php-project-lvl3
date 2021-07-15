@@ -71,8 +71,8 @@ class UrlController extends Controller
         var_dump("____________before_second_try_catch____________");
         try {
             $validator = Validator::make($url, [
-                'name' => 'unique:urls,name',
-            ]);
+                'name' => 'unique:urls',
+            ])->validate();
         } catch (ValidationException $e) {
             flash('This url already exists')->warning();
             var_dump("____________trouble_in_second_catch____________");
