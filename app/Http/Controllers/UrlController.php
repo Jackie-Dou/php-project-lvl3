@@ -34,6 +34,9 @@ class UrlController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
+        var_dump("_______________________!!!______________________");
+        var_dump($request);
+
 //        $str = getenv("DB_CONNECTION");
 //        if ($str !== false) {
 //            Log::info($str);
