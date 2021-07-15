@@ -15,18 +15,18 @@ use App\Http\Controllers\UrlController;
 |
 */
 
-Route::post('urls/store', [UrlController::class, 'store'])
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
+
+Route::post('urls', [UrlController::class, 'store'])
     ->name('urls.store');
 
 Route::get('urls', [UrlController::class, 'index'])
     -> name('urls.index');
 
-Route::post('urls/{id}/checks', [UrlCheckController::class, 'store'])
-    ->name('url_checks.store');
-
 Route::get('urls/{id}', [UrlController::class, 'show'])
     ->name('urls.show');
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::post('urls/{id}/checks', [UrlCheckController::class, 'store'])
+    ->name('url_checks.store');
