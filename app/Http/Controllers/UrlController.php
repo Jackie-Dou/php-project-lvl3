@@ -41,6 +41,8 @@ class UrlController extends Controller
 //            Log::info("error!");
 //        }
 
+        var_dump("____________!!!!!!!!!!!!!!!!!!!!!!!_________________________");
+
         try {
             $data = $this->validate(
                 $request,
