@@ -34,8 +34,8 @@ class UrlController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-        var_dump("_______________________!!!______________________");
-        var_dump($request->input('name'));
+        var_dump("_______________________111______________________");
+        var_dump($request->input());
 
 //        $str = getenv("DB_CONNECTION");
 //        if ($str !== false) {
@@ -45,7 +45,7 @@ class UrlController extends Controller
 //        }
 
         $urls = Url::all();
-        var_dump("_______________________!!!______________________");
+        var_dump("_______________________222______________________");
         var_dump($urls);
 
         try {
