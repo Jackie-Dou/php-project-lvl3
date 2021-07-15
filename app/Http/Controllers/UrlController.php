@@ -41,7 +41,9 @@ class UrlController extends Controller
 //            Log::info("error!");
 //        }
 
-        var_dump("____________{$request['name']}");
+        $urls = Url::all();
+        var_dump("_______________________!!!______________________");
+        var_dump($urls);
 
         try {
             $data = $this->validate(
