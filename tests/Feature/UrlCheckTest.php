@@ -16,8 +16,8 @@ class UrlCheckTest extends TestCase
      *
      * @return void
      */
-    private $id;
-    private $body;
+    private int $id;
+    private string $body;
 
     protected function setUp(): void
     {
@@ -32,9 +32,9 @@ class UrlCheckTest extends TestCase
         $this->id = DB::table('urls')->insertGetId($url);
     }
 
-    public function testStore()
+    public function testStore(): void
     {
-        Http::fake(function () {
+        Http::fake(function (): \GuzzleHttp\Promise\PromiseInterface {
             return Http::response($this->body, 200);
         });
 

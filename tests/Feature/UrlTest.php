@@ -12,7 +12,7 @@ use Carbon\Carbon;
 
 class UrlTest extends TestCase
 {
-    private $data;
+    private array $data;
     private const URL_NAME = "https://google.ru";
 
     protected function setUp(): void
@@ -21,14 +21,14 @@ class UrlTest extends TestCase
         $this->data = ['url' => ['name' => 'http://google.com']];
     }
 
-    public function testIndex()
+    public function testIndex(): void
     {
         $response = $this->get(route('urls.index'));
         $response->assertSee('Urls List');
         $response->assertOk();
     }
 
-    public function testStore()
+    public function testStore(): void
     {
         $response = $this->post(route('urls.store'), $this->data);
         $response->assertSessionHasNoErrors();
@@ -36,7 +36,7 @@ class UrlTest extends TestCase
         $this->assertDatabaseHas('urls', $this->data['url']);
     }
 
-    public function testShow()
+    public function testShow(): void
     {
         $id = DB::table('urls')->insertGetId($this->data['url']);
         $this->assertDatabaseHas('urls', $this->data['url']);
