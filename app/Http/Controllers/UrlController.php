@@ -9,18 +9,12 @@ use App\Http\Middleware\VerifyCsrfToken;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class UrlController extends Controller
 {
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View
     {
-//        $str = getenv("DB_CONNECTION");
-//        if ($str !== false) {
-//            Log::info($str);
-//        } else {
-//            Log::info("error!");
-//        }
-
         $urls = Url::all();
         $lastChecks = DB::table('url_checks')
             ->orderBy('created_at')
@@ -33,28 +27,9 @@ class UrlController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-        var_dump("_______________________test_input_data______________________");
-        var_dump($request->input());
-
-//        $str = getenv("DB_CONNECTION");
-//        if ($str !== false) {
-//            Log::info($str);
-//        } else {
-//            Log::info("error!");
-//        }
-
-        $urls = Url::all();
-        var_dump("_______________________show_all_url_in_table______________________");
-        foreach ($urls as $url) {
-            var_dump($url['id']);
-            var_dump($url['name']);
-        }
-
         $data = parse_url($request->input('url.name'));
         $url = [];
         $url['name'] = ($data['scheme'] ?? '') . '://' . ($data['host'] ?? '');
-
-        var_dump("____________before_validation____________");
 
         $validatorUrl = Validator::make($url, [
             'name' => 'required|max:255|url',
@@ -65,31 +40,19 @@ class UrlController extends Controller
         ]);
         if ($validatorUnique->fails()) {
             flash('This url already exists')->warning();
-            var_dump("____________trouble_in_second_catch____________");
             return redirect()
                 ->route('home');
         }
 
-        var_dump("____________before_inserting_in_DB____________");
-
-        DB::table('urls')->insert([
+        $id = DB::table('urls')->insertGetId([
             'name' => $url['name'],
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
 
-        var_dump("____________after_inserting_in_DB____________");
-
-        $urls = Url::all();
-        var_dump("_______________________show_all_url_in_table_again______________________");
-        foreach ($urls as $url) {
-            var_dump($url['id']);
-            var_dump($url['name']);
-        }
-
         flash('Url was added successfully')->success();
         return redirect()
-            ->route('urls.show', $url->id);
+            ->route('urls.show', $id);
     }
 
     public function show($id)

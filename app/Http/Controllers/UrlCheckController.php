@@ -27,7 +27,7 @@ class UrlCheckController extends Controller
     public function store(int $id): \Illuminate\Http\RedirectResponse
     {
         $url = Url::findOrFail($id);
-        abort_unless(($url !== null), 404);
+        abort_unless(($url != null), 404);
 
         try {
             $httpResponse = Http::get($url->name);
