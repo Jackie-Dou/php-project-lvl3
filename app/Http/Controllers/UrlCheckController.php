@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Url;
 use Carbon\Carbon;
 use DiDom\Document;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
@@ -13,6 +15,7 @@ class UrlCheckController extends Controller
     private function analysePage(string $htmlBody): array
     {
         $document = new Document($htmlBody);
+        $seoInfo = [];
         $seoInfo['h1'] = optional($document->first('h1'))->text();
         $seoInfo['description'] = optional($document->first('meta[name="description"]'))
             ->getAttribute('content');
@@ -21,10 +24,10 @@ class UrlCheckController extends Controller
         return $seoInfo;
     }
 
-    public function store($id): \Illuminate\Http\RedirectResponse
+    public function store(int $id): \Illuminate\Http\RedirectResponse
     {
         $url = Url::findOrFail($id);
-        abort_unless($url, 404);
+        abort_unless(($url !== null), 404);
 
         try {
             $httpResponse = Http::get($url->name);
@@ -41,9 +44,9 @@ class UrlCheckController extends Controller
             DB::table('url_checks')->insert($urlChecks);
             flash('Url was checked successfully')->success();
         } catch (RequestException $e) {
-            flash("Request failed. Message: {$e->getMessage()}")->error();
+            flash("Request failed")->error();
         } catch (ConnectionException $e) {
-            flash("Connection error. Message: {$e->getMessage()}")->error();
+            flash("Connection error")->error();
         }
 
         return redirect()
