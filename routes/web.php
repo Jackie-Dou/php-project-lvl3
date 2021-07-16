@@ -15,7 +15,7 @@ use App\Http\Controllers\UrlController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (): Illuminate\Contracts\View\View {
     return view('welcome');
 })->name('home');
 

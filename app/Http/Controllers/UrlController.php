@@ -55,7 +55,7 @@ class UrlController extends Controller
             ->route('urls.show', $id);
     }
 
-    public function show($id)
+    public function show(int $id): \Illuminate\Contracts\View\View
     {
         $url = Url::findOrFail($id);
         $url_checks = UrlCheck::where('url_id', $id)->get();
